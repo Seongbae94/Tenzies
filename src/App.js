@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Die from "./components/Die";
+import Confetti from "react-confetti";
 
 function App() {
   const [randomDiceArr, setRandomDiceArr] = useState();
@@ -70,6 +71,7 @@ function App() {
 
   return (
     <main>
+      {tenzies && <Confetti />}
       <h1 className="title">Tenzies</h1>
       <p className="instructions">
         Roll until all dice are the same. Click each die to freeze it at its
