@@ -35,6 +35,7 @@ function App() {
   const ReRollClickHandler = () => {
     randomDiceNumber();
     setTenzies(false);
+    setCount(0);
   };
 
   const DiceClickHandler = (id) => {
@@ -72,6 +73,7 @@ function App() {
   return (
     <main>
       {tenzies && <Confetti />}
+      <div className="count">Roll-count: {count}</div>
       <h1 className="title">Tenzies</h1>
       <p className="instructions">
         Roll until all dice are the same. Click each die to freeze it at its
