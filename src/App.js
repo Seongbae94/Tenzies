@@ -3,6 +3,7 @@ import Die from "./components/Die";
 
 function App() {
   const [randomDiceArr, setRandomDiceArr] = useState();
+  const [tenzies, setTenzies] = useState(false);
   const [count, setCount] = useState(0);
 
   const randomDiceNumber = () => {
@@ -30,6 +31,11 @@ function App() {
     );
   };
 
+  const ReRollClickHandler = () => {
+    randomDiceNumber();
+    setTenzies(false);
+  };
+
   const DiceClickHandler = (id) => {
     setRandomDiceArr((prev) =>
       prev.map((dice) =>
@@ -42,8 +48,33 @@ function App() {
     randomDiceNumber();
   }, []);
 
+  useEffect(() => {
+    const allHeld = randomDiceArr && randomDiceArr.every((die) => die.isheld);
+    if (allHeld) {
+      const allSameNumber = randomDiceArr.reduce((a, c) => {
+        if (a.value === c.value) {
+          return a;
+        } else {
+          return false;
+        }
+      });
+
+      if (!allSameNumber) {
+        alert("All dice should be same");
+      } else {
+        setTenzies(true);
+        alert("You Won!");
+      }
+    }
+  }, [randomDiceArr]);
+
   return (
     <main>
+      <h1 className="title">Tenzies</h1>
+      <p className="instructions">
+        Roll until all dice are the same. Click each die to freeze it at its
+        current value between rolls.
+      </p>
       <div className="dice-container">
         {randomDiceArr &&
           randomDiceArr.map((dice, index) => {
@@ -58,9 +89,16 @@ function App() {
             );
           })}
       </div>
-      <button className="roll-dice" onClick={() => RollClickHandler()}>
-        Roll
-      </button>
+      {tenzies && (
+        <button className="roll-dice" onClick={() => ReRollClickHandler()}>
+          New Game
+        </button>
+      )}
+      {!tenzies && (
+        <button className="roll-dice" onClick={() => RollClickHandler()}>
+          Roll
+        </button>
+      )}
     </main>
   );
 }
